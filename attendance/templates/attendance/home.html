@@ -1,0 +1,36 @@
+{% extends 'attendance/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 p-5">
+        <div class="row">
+            <div class="col col-lg-12">
+                <div class="row p-4">
+                    {% for subject in subjects %}
+                        <div class="card mt-5 col-12 col-lg-6 col-xl-4 p-4">
+                            <div class="card-body">
+                                <a class="btn btn-primary" data-toggle="collapse{{ subject.pk }}"
+                                   href="#collapseExample{{ subject.pk }}" role="button"
+                                   aria-expanded="false" aria-controls="collapseExample{{ subject.pk }}">
+                                    {{ subject }}
+                                </a>
+                                <div class="collapse{{ subject.pk }}" id="collapseExample{{ subject.pk }}">
+                                    <div class="card card-body">
+                                        <ul>
+                                            {% for class in subject.where %}
+                                                <li>
+                                                    <a href="">{{ class.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
