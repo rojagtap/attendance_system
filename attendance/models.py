@@ -19,6 +19,7 @@ class Student(models.Model):
     uid = models.IntegerField()
     roll = models.IntegerField()
     name = models.CharField(max_length=100)
+    address = models.TextField()
     belongs_to = models.ForeignKey(Class, on_delete=models.CASCADE)
 
     def __str__(self):

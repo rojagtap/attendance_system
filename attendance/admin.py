@@ -9,6 +9,24 @@ class CustomUserAdmin(UserAdmin):
     form = EditProfileForm
     model = Faculty
     list_display = ['username', 'first_name', 'last_name']
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'subject')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                    'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    limited_fieldsets = (
+        (None, {'fields': ('email',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'subject')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('first_name', 'last_name', 'username', 'password1', 'password2', 'subject'),
+        }),
+    )
 
 
 admin.site.register(Faculty, CustomUserAdmin)

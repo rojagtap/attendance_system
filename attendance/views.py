@@ -34,6 +34,7 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('attendance:login_user')
 
+    get_defaulters(request)
     subjects = request.user.subject.all().values()
 
     for subject in subjects:
@@ -75,3 +76,29 @@ def add(request, subject, where):
         return redirect('attendance:home')
 
     return render(request, "attendance/add.html")
+
+
+def get_defaulters(request):
+    classes = Class.objects.all()
+    attendance = []
+    students = {}
+
+    for clas in classes:
+        temp1 = [0] * clas.strength
+        temp2 = {}
+        for subject in clas.subject_set.all():
+            temp2[subject.pk] = temp1[:]
+
+        students[clas.pk] = temp2.copy()
+
+    for clas in classes:
+        for subject in clas.subject_set.all():
+            attendance.append(Lecture.objects.filter(where__name=clas.name, subject__exact=subject))
+
+    for att in attendance:
+        lec_count = len(att)
+        for query in att:
+            for student in query.student.all():
+                students[query.where.pk][query.subject.pk][student.roll - 1] += 1
+
+    print(students)
